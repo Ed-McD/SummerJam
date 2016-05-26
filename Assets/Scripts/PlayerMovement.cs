@@ -27,7 +27,10 @@ public class PlayerMovement : MonoBehaviour
         Movement();
 
         if (grounded)
+        {
             rb.velocity -= (rb.velocity * onGroundDrag) * Time.fixedDeltaTime;
+        }
+            
 
         SetGrounded(false);
     }
@@ -36,8 +39,6 @@ public class PlayerMovement : MonoBehaviour
     {
         float hz = Input.GetAxis("Horizontal") * moveSpeed * Time.fixedDeltaTime;
         float vt = Input.GetAxis("Vertical") * moveSpeed * Time.fixedDeltaTime;
-
-        Debug.Log(hz +""+ vt);
         rb.AddRelativeForce(new Vector3(hz, 0, vt));
 
     }
