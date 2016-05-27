@@ -16,7 +16,7 @@ public class BlockBehaviour : MonoBehaviour
     float blockLifetime = 0;
     bool dropBlock = false;
 
-    public void Init(int i, int defaultChance, int permanentChance, int fragileChance, int holdsDataChance, int pillarChance)
+    public void Init(int i, int defaultChance, int permanentChance, int fragileChance, int holdsDataChance, int pillarChance, int pillarScale)
     {
         if (i < defaultChance)
             blocktype = BlockType.Default;
@@ -30,6 +30,9 @@ public class BlockBehaviour : MonoBehaviour
             blocktype = BlockType.Pillar;
 
         MeshRenderer mRenderer = GetComponent<MeshRenderer>();
+
+        int random = Random.Range(0,2);
+        bool pillarUp = random == 1 ? true : false;
 
         switch(blocktype)
         {
@@ -49,8 +52,9 @@ public class BlockBehaviour : MonoBehaviour
                 break;
             case BlockType.Pillar:
                 mRenderer.material = LevelGenerator.instance.blockMaterials[4];
-                transform.localScale += new Vector3(0, 10, 0);
-                transform.localPosition -= new Vector3(0, 5, 0);
+                transform.localScale += new Vector3(0, pillarUp ? pillarScale : -pillarScale, 0);
+                transform.localPosition -= new Vector3(0, (pillarUp ? pillarScale : -pillarScale )/ 2, 0);
+                GetComponent<BoxCollider>().isTrigger = false;
                 break;
 
         }

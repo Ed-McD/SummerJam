@@ -10,6 +10,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] GameObject dataPrefab = null;
     public float levelSize = 5;
     public float blockGap = 3;
+    [SerializeField] float blockScale = 1;
     [SerializeField] int dataHeightDistanceMin = 5;
     [SerializeField] int dataHeightDistanceMax = 10;
 
@@ -19,6 +20,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int fragileChance = 2;
     [SerializeField] int holdsDataChance = 5;
     [SerializeField] int pillarChance = 4;
+    [SerializeField] int pillarScale = 20;
 
     [Tooltip("Ensure the materials are in the same order as the chances")]
     public Material[] blockMaterials;
@@ -42,16 +44,33 @@ public class LevelGenerator : MonoBehaviour
 
         CreateLevel();
 
+
+
     }
 
     public void RemoveBlock(GameObject block)
     {
-        blocks.Remove(block);
+        Destroy(block);
     }
 
     public void RemoveData(GameObject data)
     {
-        datas.Remove(data);
+        Destroy(data);
+    }
+
+    public void RemoveLevel()
+    {
+        for(int i = 0; i < blocks.Count; ++i)
+        {
+            RemoveBlock(blocks[i]);
+        }
+        for(int i = 0; i < datas.Count; ++i)
+        {
+            RemoveData(datas[i]);
+        }
+
+        blocks.Clear();
+        datas.Clear();
     }
 
     void CreateLevel()
@@ -60,11 +79,12 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int j = 0; j < levelSize; ++j)
             {
-                GameObject block = Instantiate(blockPrefab, new Vector3(i * blockGap, gameObject.transform.position.y, j * blockGap), Quaternion.identity) as GameObject;
+                GameObject block = Instantiate(blockPrefab, new Vector3(i * blockGap, Random.Range(-pillarScale, pillarScale + 1), j * blockGap), Quaternion.identity) as GameObject;
+                block.transform.localScale *= blockScale;
                 BlockBehaviour bBehave = block.AddComponent<BlockBehaviour>();
 
                 int blockType = Random.Range(0, pillarChance);
-                bBehave.Init(blockType, defaultChance, permanentChance, fragileChance, holdsDataChance, pillarChance);
+                bBehave.Init(blockType, defaultChance, permanentChance, fragileChance, holdsDataChance, pillarChance, pillarScale);
 
                 if(bBehave.blocktype == BlockType.HoldsData)
                 {
@@ -85,6 +105,10 @@ public class LevelGenerator : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	
-	}
+        if (Input.GetButtonDown("Jump"))
+        {
+            RemoveLevel();
+            CreateLevel();
+        }
+    }
 }

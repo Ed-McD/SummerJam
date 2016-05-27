@@ -55,6 +55,10 @@ public class Tether : MonoBehaviour {
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
             {
                 setTetherPosition(hit.point);
+                if(hit.collider.gameObject.tag == "block")
+                {
+                    hit.collider.gameObject.GetComponent<BlockBehaviour>().HitBlock();
+                }
             }
         }
         if (Input.GetButtonDown("Fire2"))
