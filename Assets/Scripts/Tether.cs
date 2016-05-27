@@ -119,9 +119,7 @@ public class Tether : MonoBehaviour {
             {
                 lr.material = pullMat;                
             }
-
-            //if (!pullIgnoresGrav)
-            //    vel += Physics.gravity * Time.fixedDeltaTime;
+            
             vel = pullIgnoresGrav ? vel - Physics.gravity * Time.fixedDeltaTime : vel + Physics.gravity * Time.fixedDeltaTime;
 
             vel -= (rb.drag * vel) * Time.fixedDeltaTime;
