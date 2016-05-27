@@ -8,19 +8,31 @@ public class Tether : MonoBehaviour {
     private LineRenderer lr;
     private Rigidbody rb;
     private bool amTethered;
+    private bool amPulling;
+    public float pullSpeed = 10;
+    public bool pullIgnoresGrav = false;
     private Vector3 tetherPoint;
     private float tetherLength;
     private Camera cam;
+    private Material swingMat;
+    private Material pullMat;
 
     [SerializeField]
-    private Transform offset;
+    private Transform leftOffset;
+    [SerializeField]
+    private Transform rightOffset;
 
     // Use this for initialization
     void Awake()
     {
-        if (!offset)
+        if (!leftOffset)
         {
-            offset = transform;
+            leftOffset = transform;
+        }
+
+        if (!rightOffset)
+        {
+            rightOffset = transform;
         }
 
         if (!GetComponent<LineRenderer>())        
@@ -30,21 +42,34 @@ public class Tether : MonoBehaviour {
 
         rb = GetComponent<Rigidbody>();
         cam = GetComponentInChildren<Camera>();
+        swingMat = lr.materials[0];
+        pullMat = lr.materials[1];
         
     }
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            amPulling = false;
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
             {
-                setPosition(hit.point);
+                setTetherPosition(hit.point);
             }
         }
         if (Input.GetButtonDown("Fire2"))
         {
             amTethered = false;
+            RaycastHit hit;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
+            {
+                setPullPosition(hit.point);
+            }
+        }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            amTethered = false;
+            amPulling = false;
         }
     }
 
@@ -56,12 +81,18 @@ public class Tether : MonoBehaviour {
             Vector3 vel = rb.velocity;
             Vector3 testPos = transform.position;
             lr.enabled = true;
-            lr.SetPosition(0, offset.position);
+            lr.SetPosition(0, leftOffset.position);
             lr.SetPosition(1, tetherPoint);
+
+            if (lr.material != swingMat)
+            {
+                lr.material = swingMat;
+            }
 
             vel += Physics.gravity * Time.fixedDeltaTime;
             vel -= (rb.drag * vel) * Time.fixedDeltaTime;
             testPos += vel * Time.fixedDeltaTime;
+
 
             if ((testPos - tetherPoint).magnitude > tetherLength)
             {
@@ -72,13 +103,42 @@ public class Tether : MonoBehaviour {
             }
 
         }
+        else if (amPulling)
+        {
+            Vector3 testPos = transform.position;
+            Vector3 vel = rb.velocity;
+            lr.enabled = true;
+            lr.SetPosition(0, rightOffset.position);
+            lr.SetPosition(1, tetherPoint);
+
+            if (lr.material != pullMat)
+            {
+                lr.material = pullMat;                
+            }
+
+            //if (!pullIgnoresGrav)
+            //    vel += Physics.gravity * Time.fixedDeltaTime;
+            vel = pullIgnoresGrav ? vel - Physics.gravity * Time.fixedDeltaTime : vel + Physics.gravity * Time.fixedDeltaTime;
+
+            vel -= (rb.drag * vel) * Time.fixedDeltaTime;
+            testPos += vel * Time.fixedDeltaTime;
+            testPos -= (testPos - tetherPoint).normalized * pullSpeed *  Time.fixedDeltaTime;
+            vel = (testPos - transform.position) / Time.fixedDeltaTime;
+            rb.velocity = vel;
+        }
         else
         {
             lr.enabled = false;
         }
     }
 
-    public void setPosition(Vector3 _hitLocation)
+    public void setPullPosition(Vector3 _hitLocation)
+    {
+        amPulling = true;
+        tetherPoint = _hitLocation;
+    }
+
+    public void setTetherPosition(Vector3 _hitLocation)
     {
         amTethered = true;
         tetherPoint = _hitLocation;

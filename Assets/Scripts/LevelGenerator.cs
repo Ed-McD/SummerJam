@@ -10,7 +10,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] GameObject dataPrefab = null;
     public float levelSize = 5;
     public float blockGap = 3;
-    [SerializeField] int dataHeightDistance = 5;
+    [SerializeField] int dataHeightDistanceMin = 5;
+    [SerializeField] int dataHeightDistanceMax = 10;
 
     [Tooltip("Define chances of each block appearing")] 
     [SerializeField] int defaultChance = 5;
@@ -68,8 +69,9 @@ public class LevelGenerator : MonoBehaviour
                 if(bBehave.blocktype == BlockType.HoldsData)
                 {
                     GameObject data = Instantiate(dataPrefab) as GameObject;
-                    data.transform.parent = block.transform;
-                    data.transform.position = block.transform.position + new Vector3(0, -dataHeightDistance, 0);
+                    //data.transform.parent = block.transform;     ///animations on data cubes breaks with this, dunno why. if this is only to tidy the hierarcchy then I've replaced with hideflags
+                    data.hideFlags = HideFlags.HideInHierarchy;
+                    data.transform.position = block.transform.position + new Vector3(0, Random.Range(- (float)dataHeightDistanceMin,-dataHeightDistanceMax ), 0);
 
                     datas.Add(data);
                 }

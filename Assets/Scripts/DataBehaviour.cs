@@ -17,6 +17,7 @@ public class DataBehaviour : MonoBehaviour {
 
     void OnTriggerEnter(Collider coll)
     {
-        coll.GetComponent<PlayerData>().IncrementScore();
+        if (coll.tag == "Player")
+            coll.GetComponent<PlayerData>().IncrementScore();
     }
 }
