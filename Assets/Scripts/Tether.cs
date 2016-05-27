@@ -16,6 +16,7 @@ public class Tether : MonoBehaviour {
     private Camera cam;
     private Material swingMat;
     private Material pullMat;
+    private TetherObject tetheredObject;
 
     [SerializeField]
     private Transform leftOffset;
@@ -46,6 +47,7 @@ public class Tether : MonoBehaviour {
         pullMat = lr.materials[1];
         
     }
+
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -54,7 +56,7 @@ public class Tether : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
             {
-                setTetherPosition(hit.point);
+                setTetherPosition(hit);
                 if(hit.collider.gameObject.tag == "block")
                 {
                     hit.collider.gameObject.GetComponent<BlockBehaviour>().HitBlock();
@@ -67,10 +69,14 @@ public class Tether : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit))
             {
-                setPullPosition(hit.point);
+                setPullPosition(hit);
+                if (hit.collider.gameObject.tag == "block")
+                {
+                    hit.collider.gameObject.GetComponent<BlockBehaviour>().HitBlock();
+                }
             }
         }
-        if (Input.GetButtonDown("Fire3"))
+        if (Input.GetButtonDown("Fire3") || !tetheredObject.attachedTo)
         {
             amTethered = false;
             amPulling = false;
@@ -82,6 +88,7 @@ public class Tether : MonoBehaviour {
     {
         if (amTethered)
         {
+            tetherPoint = tetheredObject.attachedTo.gameObject.transform.position + tetheredObject.relativeHitPoint;
             Vector3 vel = rb.velocity;
             Vector3 testPos = transform.position;
             lr.enabled = true;
@@ -109,6 +116,7 @@ public class Tether : MonoBehaviour {
         }
         else if (amPulling)
         {
+            tetherPoint = tetheredObject.attachedTo.gameObject.transform.position + tetheredObject.relativeHitPoint;
             Vector3 testPos = transform.position;
             Vector3 vel = rb.velocity;
             lr.enabled = true;
@@ -134,16 +142,29 @@ public class Tether : MonoBehaviour {
         }
     }
 
-    public void setPullPosition(Vector3 _hitLocation)
+    public void setPullPosition(RaycastHit _hit)
     {
         amPulling = true;
-        tetherPoint = _hitLocation;
+        tetheredObject = new TetherObject() { attachedTo = _hit.collider.gameObject, relativeHitPoint = _hit.point - _hit.collider.gameObject.transform.position};
+
     }
 
-    public void setTetherPosition(Vector3 _hitLocation)
+    public void setTetherPosition(RaycastHit _hit)
     {
         amTethered = true;
-        tetherPoint = _hitLocation;
-        tetherLength = Vector3.Distance(tetherPoint, transform.position);
+        tetheredObject = new TetherObject() { attachedTo = _hit.collider.gameObject, relativeHitPoint = _hit.point - _hit.collider.gameObject.transform.position};
+        tetherLength = Vector3.Distance(tetheredObject.attachedTo.gameObject.transform.position + tetheredObject.relativeHitPoint, transform.position);
     }
+
+    public void Reset()
+    {
+        amTethered = false;
+        amPulling = false;
+    }
+
+}
+public struct TetherObject
+{
+    public GameObject attachedTo;
+    public Vector3 relativeHitPoint;
 }

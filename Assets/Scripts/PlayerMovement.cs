@@ -12,12 +12,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float onGroundDrag;
     private int inversion;
     private bool grounded = false;
+    Quaternion initialCamRot;
+    Quaternion initialPlayerRot;
 
     // Use this for initialization
     void Awake()
     {
         cameraObject = GetComponentInChildren<Camera>().gameObject;
         rb = GetComponent<Rigidbody>();
+        initialCamRot = cameraObject.transform.rotation;
+        initialPlayerRot = transform.rotation;
     }
 
     // Update is called once per frame
@@ -64,6 +68,13 @@ public class PlayerMovement : MonoBehaviour
     public void SetGrounded(bool _grounded)
     {
         grounded = _grounded;
+    }
+
+    public void Reset()
+    {
+        rb.velocity = Vector3.zero;
+        cameraObject.transform.rotation = initialCamRot;
+        transform.rotation = initialPlayerRot;
     }
 
 }
