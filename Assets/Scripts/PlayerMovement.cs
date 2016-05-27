@@ -5,7 +5,8 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody rb;    
     private GameObject cameraObject;    
-    [SerializeField] private float viewRange = 60;
+    [SerializeField] private float lowerViewRange = 60;
+    [SerializeField] private float upperViewRange = 60;
     public float sensitivity;
     public bool invertY;
     [SerializeField] private float moveSpeed = 500;
@@ -55,13 +56,13 @@ public class PlayerMovement : MonoBehaviour
 
         cameraObject.transform.Rotate(vt * inversion, 0, 0);
         transform.Rotate(0, hz, 0);
-        if (cameraObject.transform.localEulerAngles.x > viewRange && cameraObject.transform.localEulerAngles.x < 180)
+        if (cameraObject.transform.localEulerAngles.x > lowerViewRange && cameraObject.transform.localEulerAngles.x < 180)
         {
-            cameraObject.transform.localEulerAngles = new Vector3(viewRange, 0, 0);
+            cameraObject.transform.localEulerAngles = new Vector3(lowerViewRange, 0, 0);
         }
-        if (cameraObject.transform.localEulerAngles.x < 360 - viewRange && cameraObject.transform.localEulerAngles.x > 180)
+        if (cameraObject.transform.localEulerAngles.x < 360 - upperViewRange && cameraObject.transform.localEulerAngles.x > 180)
         {
-            cameraObject.transform.localEulerAngles = new Vector3(360 - viewRange, 0, 0);
+            cameraObject.transform.localEulerAngles = new Vector3(360 - upperViewRange, 0, 0);
         }
     }
 

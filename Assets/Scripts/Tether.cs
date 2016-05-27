@@ -76,7 +76,7 @@ public class Tether : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetButtonDown("Fire3") || !tetheredObject.attachedTo)
+        if (Input.GetButtonDown("Fire3"))
         {
             amTethered = false;
             amPulling = false;
@@ -86,6 +86,12 @@ public class Tether : MonoBehaviour {
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(tetheredObject.attachedTo == null)
+        {
+            amTethered = false;
+            amPulling = false;
+        }
+
         if (amTethered)
         {
             tetherPoint = tetheredObject.attachedTo.gameObject.transform.position + tetheredObject.relativeHitPoint;
