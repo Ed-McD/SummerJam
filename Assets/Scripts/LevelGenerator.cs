@@ -22,6 +22,8 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] int pillarChance = 4;
     [SerializeField] int pillarScale = 20;
 
+    private int blocksDropped = 0;
+
     [Tooltip("Ensure the materials are in the same order as the chances")]
     public Material[] blockMaterials;
 
@@ -50,11 +52,14 @@ public class LevelGenerator : MonoBehaviour
 
     public void RemoveBlock(GameObject block)
     {
+        blocks.Remove(block);
         Destroy(block);
+        CanvasManager.instance.SetDroppedBlocks(++blocksDropped); 
     }
 
     public void RemoveData(GameObject data)
     {
+        datas.Remove(data);
         Destroy(data);
     }
 
@@ -62,15 +67,17 @@ public class LevelGenerator : MonoBehaviour
     {
         for(int i = 0; i < blocks.Count; ++i)
         {
-            RemoveBlock(blocks[i]);
+            Destroy(blocks[i]);
         }
         for(int i = 0; i < datas.Count; ++i)
         {
-            RemoveData(datas[i]);
+            Destroy(datas[i]);
         }
 
         blocks.Clear();
         datas.Clear();
+
+        blocksDropped = 0;
     }
 
     void CreateLevel()

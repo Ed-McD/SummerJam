@@ -17,6 +17,6 @@ public class PlayerData : MonoBehaviour
 
     public void IncrementScore()
     {
-        ++playerScore;
+        CanvasManager.instance.SetScore(++playerScore);
     }
 }

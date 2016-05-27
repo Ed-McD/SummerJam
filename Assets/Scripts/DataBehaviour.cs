@@ -19,5 +19,7 @@ public class DataBehaviour : MonoBehaviour {
     {
         if (coll.tag == "Player")
             coll.GetComponent<PlayerData>().IncrementScore();
+
+        LevelGenerator.instance.RemoveData(gameObject);
     }
 }

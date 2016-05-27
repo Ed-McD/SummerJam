@@ -16,6 +16,8 @@ public class BlockBehaviour : MonoBehaviour
     float blockLifetime = 0;
     bool dropBlock = false;
 
+    bool hitCollider = false;
+
     public void Init(int i, int defaultChance, int permanentChance, int fragileChance, int holdsDataChance, int pillarChance, int pillarScale)
     {
         if (i < defaultChance)
@@ -84,17 +86,20 @@ public class BlockBehaviour : MonoBehaviour
         }
     }
 
-    void RemoveBlock()
-    {
-        LevelGenerator.instance.RemoveBlock(gameObject);
-        DestroyImmediate(gameObject);
-    }
-
     void SetDropBlock()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = true;
-        rb.constraints &= ~RigidbodyConstraints.FreezePositionY;
+        rb.constraints &= ~RigidbodyConstraints.FreezeAll;
+    }
+
+    void OnTriggerEnter(Collider coll)
+    {
+        if(coll.gameObject.tag == "BottomCollider" && !hitCollider)
+        {
+            hitCollider = true;
+            LevelGenerator.instance.RemoveBlock(gameObject);
+        }
     }
 	
 	// Update is called once per frame
