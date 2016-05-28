@@ -113,7 +113,7 @@
 					col.r = _Color.r;
 					col.g = _Color.g;
 					col.b = _Color.b;
-					col.a = 1 - greyscale ;
+					col.a = (1 - greyscale) - (1- _Cutoff);
 					return col;
 				}
 				return col;

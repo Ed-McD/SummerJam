@@ -83,6 +83,36 @@ public class Tether : MonoBehaviour {
         }
     }
 
+    void LateUpdate()
+    {
+        if (amTethered)
+        {
+            lr.enabled = true;
+            lr.SetPosition(0, leftOffset.position);
+            lr.SetPosition(1, tetherPoint);
+
+            if (lr.material != swingMat)
+            {
+                lr.material = swingMat;
+            }
+        }
+        else if (amPulling)
+        {
+            lr.enabled = true;
+            lr.SetPosition(0, rightOffset.position);
+            lr.SetPosition(1, tetherPoint);
+
+            if (lr.material != pullMat)
+            {
+                lr.material = pullMat;
+            }
+        }
+        else
+        {
+            lr.enabled = false;
+        }
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {

@@ -14,6 +14,8 @@ public class CanvasManager : MonoBehaviour
 	void Start ()
     {
         _instance = this;
+        SetScore(0);
+        SetDroppedBlocks(0);
 	}
 	
 	// Update is called once per frame

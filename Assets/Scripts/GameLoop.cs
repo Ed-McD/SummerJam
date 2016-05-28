@@ -17,9 +17,14 @@ public class GameLoop : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        
         if (playerOut)
         {
             SceneReset();
+        }
+        if (Input.GetButtonDown("Jump"))
+        {
+            playerOut = true;
         }
     }
     public void SetPlayerOut(bool _val)
@@ -29,11 +34,17 @@ public class GameLoop : MonoBehaviour {
 
     void SceneReset()
     {
-        playerOut = false;
+        playerOut = false;        
         player.GetComponent<Tether>().Reset();
         player.GetComponent<PlayerMovement>().Reset();
+        player.GetComponent<PlayerData>().playerScore = 0;
         player.transform.position = spawnPoint;
-        LevelGenerator.instance.RemoveLevel();
+        player.GetComponentInChildren<ParticleSystem>().Clear();
+        player.GetComponentInChildren<ParticleSystem>().Stop();
+        player.GetComponentInChildren<ParticleSystem>().Play();
+        CanvasManager.instance.SetScore(0);
+        LevelGenerator.instance.ResetLevel(); 
+
     }
 
 }

@@ -10,11 +10,19 @@ public class DrawCrossHair : MonoBehaviour
     private Rect screenPos;
     [SerializeField]
     private float scaleFactor = 1;
+    Vector2 lastWindowSize;
 
     // Use this for initialization
     void Awake()
     {
-        screenPos = new Rect((Screen.width- crossHair.width * scaleFactor) / 2, (Screen.height-crossHair.height*scaleFactor) / 2, crossHair.width*scaleFactor, crossHair.height*scaleFactor);
+        CalculateRect();
+    }
+    void Update()
+    {
+        if (lastWindowSize.x != Screen.width || lastWindowSize.y != Screen.height)
+        {
+            CalculateRect();
+        }
     }
 
     // Update is called once per frame
@@ -22,4 +30,12 @@ public class DrawCrossHair : MonoBehaviour
     {
         GUI.DrawTexture(screenPos, crossHair);
     }
+    
+    void CalculateRect()
+    {
+        screenPos = new Rect((Screen.width - crossHair.width * scaleFactor) / 2, (Screen.height - crossHair.height * scaleFactor) / 2, crossHair.width * scaleFactor, crossHair.height * scaleFactor);
+        lastWindowSize.x = Screen.width;
+        lastWindowSize.y = Screen.height;
+    }
+
 }

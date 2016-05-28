@@ -78,6 +78,7 @@ public class LevelGenerator : MonoBehaviour
         datas.Clear();
 
         blocksDropped = 0;
+        CanvasManager.instance.SetDroppedBlocks(blocksDropped);
     }
 
     void CreateLevel()
@@ -108,14 +109,15 @@ public class LevelGenerator : MonoBehaviour
             }
         }
     }
+    public void ResetLevel()
+    {
+        RemoveLevel();
+        CreateLevel();
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            RemoveLevel();
-            CreateLevel();
-        }
+        
     }
 }
