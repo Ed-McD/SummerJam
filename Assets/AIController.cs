@@ -46,7 +46,8 @@ public class AIController : MonoBehaviour {
             {
                 transform.position = Vector3.MoveTowards(transform.position, Waypoints[progression], speed * Time.fixedDeltaTime);
             }
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Waypoints[progression]-transform.position), rotSpeed * Time.fixedDeltaTime);
+            if (Waypoints[progression]-transform.position!= Vector3.zero)
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(Waypoints[progression]-transform.position), rotSpeed * Time.fixedDeltaTime);
         }
     }
 }
