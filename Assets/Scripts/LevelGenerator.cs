@@ -108,6 +108,7 @@ public class LevelGenerator : MonoBehaviour
                 blocks.Add(block);
             }
         }
+        AIManager.instance.Populate(levelSize, blockGap, pillarScale, blockScale);
     }
     public void ResetLevel()
     {

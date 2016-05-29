@@ -34,7 +34,8 @@ public class GameLoop : MonoBehaviour {
 
     void SceneReset()
     {
-        playerOut = false;        
+        playerOut = false;
+        AIManager.instance.Reset();        
         player.GetComponent<Tether>().Reset();
         player.GetComponent<PlayerMovement>().Reset();
         player.GetComponent<PlayerData>().playerScore = 0;
@@ -43,7 +44,8 @@ public class GameLoop : MonoBehaviour {
         player.GetComponentInChildren<ParticleSystem>().Stop();
         player.GetComponentInChildren<ParticleSystem>().Play();
         CanvasManager.instance.SetScore(0);
-        LevelGenerator.instance.ResetLevel(); 
+        LevelGenerator.instance.ResetLevel();
+        
 
     }
 
