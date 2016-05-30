@@ -9,6 +9,7 @@ public class AIManager : MonoBehaviour {
     public static AIManager instance { get { return _instance; } }
     public GameObject bot;
     List<GameObject> bots = new List<GameObject>();
+    public int maxExtraWaypoints =3;
 
     // Use this for initialization
     void Awake()
@@ -16,7 +17,7 @@ public class AIManager : MonoBehaviour {
         _instance = this;
     }
 
-    public void Populate(float _size, float _gap, float _pillarSize, float _blocksize)
+    public void Populate(int _size, float _gap, float _pillarSize, float _blocksize)
     {
         AIController tempAI;
         List<Vector3> tempWaypoints = new List<Vector3>();
@@ -25,11 +26,28 @@ public class AIManager : MonoBehaviour {
             tempWaypoints.Clear();
             bots.Add(Instantiate(bot));
             tempAI = bots[i].GetComponent<AIController>();
-            bots[i].transform.position = new Vector3( i * _gap - _gap / 2, Random.Range(-_pillarSize / 2, _pillarSize / 2), Random.Range(0, _size* _gap - _gap / 2));
+            bots[i].transform.position = new Vector3( i * _gap - _gap / 2, Random.Range(-_pillarSize / 2, _pillarSize / 2), Random.Range(0, _size) * _gap - _gap / 2);
             tempAI.Waypoints.Add(new Vector3(bots[i].transform.position.x, bots[i].transform.position.y, 0));
             Vector3 newWaypoint = tempAI.Waypoints[0];           
             newWaypoint.z = _size * _gap - _gap/ 2;      
             tempAI.Waypoints.Add(newWaypoint);
+
+            int tempRand = Random.Range(0, maxExtraWaypoints+1);
+            for(int j = 0; j < tempRand; j ++ )
+            {
+                if (j == 0)
+                    tempAI.Waypoints.Add(new Vector3(tempAI.Waypoints[tempAI.Waypoints.Count - 1].x, bots[i].transform.position.y, Random.Range(0,_size ) * _gap - _gap / 2));
+                else
+                {
+                    newWaypoint = tempAI.Waypoints[tempAI.Waypoints.Count - 1];
+                    if(RandomBool())
+                        newWaypoint.z = Random.Range(0, _size) * _gap - _gap / 2;
+                    else
+                        newWaypoint.x = Random.Range(0, _size) * _gap - _gap / 2;
+
+                    tempAI.Waypoints.Add(newWaypoint);
+                }
+            }
            
             //Reflect waypoints;
             foreach (Vector3 wp in tempAI.Waypoints)
@@ -41,7 +59,7 @@ public class AIManager : MonoBehaviour {
             tempWaypoints.RemoveAt(0);
             for (int j = 0; j < tempWaypoints.Count; j++)
             {
-                tempAI.Waypoints.Add(tempWaypoints[i]);
+                tempAI.Waypoints.Add(tempWaypoints[j]);
             }           
 
         }
@@ -67,6 +85,7 @@ public class AIManager : MonoBehaviour {
     {
         if (Random.value >= 0.5f)
             return true;
+        else
         return false;
     }
 }

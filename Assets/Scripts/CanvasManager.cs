@@ -25,11 +25,11 @@ public class CanvasManager : MonoBehaviour
 
     public void SetScore(int score)
     {
-        DataCollected.text = "Data Collected - " + score;
+        DataCollected.text = "Data Collected: " + score;
     }
     
     public void SetDroppedBlocks(int droppedBlocks)
     {
-        BlocksDropped.text = "Blocks Dropped - " + droppedBlocks;
+        BlocksDropped.text = "Blocks Dropped: " + droppedBlocks;
     }
 }

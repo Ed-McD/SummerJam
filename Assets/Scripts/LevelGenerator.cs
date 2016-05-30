@@ -8,7 +8,7 @@ public class LevelGenerator : MonoBehaviour
 
     [SerializeField] GameObject blockPrefab = null;
     [SerializeField] GameObject dataPrefab = null;
-    public float levelSize = 5;
+    public int levelSize = 5;
     public float blockGap = 3;
     [SerializeField] float blockScale = 1;
     [SerializeField] int dataHeightDistanceMin = 5;
