@@ -97,7 +97,6 @@ public class LevelGenerator : MonoBehaviour
                 if(bBehave.blocktype == BlockType.HoldsData)
                 {
                     GameObject data = Instantiate(dataPrefab) as GameObject;
-                    //data.transform.parent = block.transform;     ///animations on data cubes breaks with this, dunno why. if this is only to tidy the hierarcchy then I've replaced with hideflags
                     data.hideFlags = HideFlags.HideInHierarchy;
                     data.transform.position = block.transform.position + new Vector3(0, Random.Range(- (float)dataHeightDistanceMin,-dataHeightDistanceMax ), 0);
 
