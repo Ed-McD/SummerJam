@@ -9,6 +9,7 @@ public class CanvasManager : MonoBehaviour
 
     [SerializeField] Text DataCollected;
     [SerializeField] Text BlocksDropped;
+    [SerializeField] Slider slowmoSlider;
 
 	// Use this for initialization
 	void Start ()
@@ -31,5 +32,10 @@ public class CanvasManager : MonoBehaviour
     public void SetDroppedBlocks(int droppedBlocks)
     {
         BlocksDropped.text = "Blocks Dropped: " + droppedBlocks;
+    }
+
+    public void SetSliderValue(float slowValue)
+    {
+        slowmoSlider.value = slowValue;
     }
 }
