@@ -39,6 +39,7 @@ public class GameLoop : MonoBehaviour {
         player.GetComponent<Tether>().Reset();
         player.GetComponent<PlayerMovement>().Reset();
         player.GetComponent<PlayerData>().playerScore = 0;
+        player.GetComponent<SlowTime>().ResetMeter();
         player.transform.position = spawnPoint;
         player.GetComponentInChildren<ParticleSystem>().Clear();
         player.GetComponentInChildren<ParticleSystem>().Stop();
