@@ -14,6 +14,7 @@ public class SlowTime : MonoBehaviour {
     {
         meterLevel = maxTime;
         canSlow = true;
+        CanvasManager.instance.SetSliderMax(maxTime);
 
     }
 
@@ -38,6 +39,7 @@ public class SlowTime : MonoBehaviour {
         meterLevel = Mathf.Clamp(meterLevel, 0, maxTime);
 
         //Update slider here
+        CanvasManager.instance.SetSliderValue(meterLevel);
 
         
     }
@@ -45,5 +47,7 @@ public class SlowTime : MonoBehaviour {
     {
         meterLevel = maxTime;
         //Update slider here
+        CanvasManager.instance.SetSliderValue(meterLevel);
+        
     }
 }

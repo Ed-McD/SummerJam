@@ -38,4 +38,8 @@ public class CanvasManager : MonoBehaviour
     {
         slowmoSlider.value = slowValue;
     }
+    public void SetSliderMax(float maxValue)
+    {
+        slowmoSlider.maxValue = maxValue;
+    }
 }
