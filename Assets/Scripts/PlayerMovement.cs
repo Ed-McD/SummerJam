@@ -53,9 +53,11 @@ public class PlayerMovement : MonoBehaviour
         float hz = Input.GetAxis("Mouse X") * sensitivity*100 * Time.fixedDeltaTime;
         float vt = Input.GetAxis("Mouse Y") * sensitivity*100 * Time.fixedDeltaTime;
         inversion = invertY ? 1 : -1;
+
         Debug.Log(Input.GetAxis("Mouse X") + ", " + Input.GetAxis("Mouse Y"));
 
         cameraObject.transform.Rotate(vt * inversion, 0, 0);
+        
         transform.Rotate(0, hz, 0);
         if (cameraObject.transform.localEulerAngles.x > lowerViewRange && cameraObject.transform.localEulerAngles.x < 180)
         {
@@ -64,6 +66,10 @@ public class PlayerMovement : MonoBehaviour
         if (cameraObject.transform.localEulerAngles.x < 360 - upperViewRange && cameraObject.transform.localEulerAngles.x > 180)
         {
             cameraObject.transform.localEulerAngles = new Vector3(360 - upperViewRange, 0, 0);
+        }
+        if (cameraObject.transform.localEulerAngles.y != 0 || cameraObject.transform.localEulerAngles.z != 0)
+        {
+            cameraObject.transform.localEulerAngles = new Vector3(cameraObject.transform.localEulerAngles.x, 0, 0);
         }
     }
 
