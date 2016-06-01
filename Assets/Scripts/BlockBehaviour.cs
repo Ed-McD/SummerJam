@@ -43,26 +43,33 @@ public class BlockBehaviour : MonoBehaviour
                 mRenderer.material = LevelGenerator.instance.blockMaterials[0];
                 blockLifetime = 3.0f;
                 mAnim.SetInteger("colourType", 1);
+                GetComponent<ReCalcCubeTexture>().enabled = false;
                 break;
             case BlockType.Permanent:
                 mRenderer.material = LevelGenerator.instance.blockMaterials[1];
                 mAnim.SetInteger("colourType", 0);
+                GetComponent<ReCalcCubeTexture>().enabled = false;
                 break;
             case BlockType.Fragile:
                 mRenderer.material = LevelGenerator.instance.blockMaterials[2];
                 mAnim.SetInteger("colourType", 4);
+                GetComponent<ReCalcCubeTexture>().enabled = false;
                 break;
             case BlockType.HoldsData:
                 mRenderer.material = LevelGenerator.instance.blockMaterials[3];
                 blockLifetime = 3.0f;
                 mAnim.SetInteger("colourType", 5);
+                GetComponent<ReCalcCubeTexture>().enabled = false;
                 break;
             case BlockType.Pillar:
-                mRenderer.material = LevelGenerator.instance.blockMaterials[4];
+                
                 transform.localScale += new Vector3(0, pillarUp ? pillarScale : -pillarScale, 0);
                 transform.localPosition -= new Vector3(0, (pillarUp ? pillarScale : -pillarScale )/ 2, 0);
+                GetComponent<ReCalcCubeTexture>().Calculate();
+                mRenderer.material = LevelGenerator.instance.blockMaterials[4];
                 GetComponent<BoxCollider>().isTrigger = false;
                 mAnim.SetInteger("colourType", 2);
+                GetComponent<ReCalcCubeTexture>().enabled = true;
                 break;
 
         }

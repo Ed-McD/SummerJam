@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         float vt = Input.GetAxis("Mouse Y") * sensitivity*100 * Time.fixedDeltaTime;
         inversion = invertY ? 1 : -1;
 
-        Debug.Log(Input.GetAxis("Mouse X") + ", " + Input.GetAxis("Mouse Y"));
+        //Debug.Log(Input.GetAxis("Mouse X") + ", " + Input.GetAxis("Mouse Y"));
 
         cameraObject.transform.Rotate(vt * inversion, 0, 0);
         
