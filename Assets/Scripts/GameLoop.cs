@@ -12,17 +12,22 @@ public class GameLoop : MonoBehaviour {
     {
         playerOut = false;
         spawnPoint = player.transform.position;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Cursor.visible == true)
+        {
+            Cursor.visible = false;
+        }
         
         if (playerOut)
         {
             SceneReset();
         }
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetKeyDown("r"))
         {
             playerOut = true;
         }
