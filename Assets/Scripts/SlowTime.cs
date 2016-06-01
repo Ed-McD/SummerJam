@@ -7,19 +7,21 @@ public class SlowTime : MonoBehaviour {
     [SerializeField] private float maxTime = 5.0f;
     public  bool canSlow;
     public float meterLevel;
+    private bool maxSet = false;
 
 
     // Use this for initialization
     void Awake()
     {
         meterLevel = maxTime;
-        canSlow = true;
-        CanvasManager.instance.SetSliderMax(maxTime);
-
+        canSlow = true;   
     }
 
     void FixedUpdate()
-    {
+    { 
+        if (maxSet)
+            CanvasManager.instance.SetSliderMax(maxTime);
+
         if (Input.GetKey("left shift") && meterLevel > 0 && canSlow)
         {
             Time.timeScale = slowMo;
