@@ -4,23 +4,23 @@ using System.Collections;
 public class GameLoop : MonoBehaviour {
 
     private bool playerOut = false;
-    [SerializeField]
-    private GameObject player;    
+    [SerializeField] private bool cursorVisible = false;
+    [SerializeField] private GameObject player;    
     private Vector3 spawnPoint;    
 
     void Awake()
     {
         playerOut = false;
         spawnPoint = player.transform.position;
-        Cursor.visible = false;
+        Cursor.visible = cursorVisible;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Cursor.visible == true)
+        if (Cursor.visible != cursorVisible)
         {
-            Cursor.visible = false;
+            Cursor.visible = cursorVisible;
         }
         
         if (playerOut)
