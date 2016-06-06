@@ -40,7 +40,7 @@ public class Tether : MonoBehaviour {
             rightOffset = transform;
         }
 
-        if (!GetComponent<LineRenderer>())        
+        if (!GetComponent<LineRenderer>())
             gameObject.AddComponent<LineRenderer>();
         lr = GetComponent<LineRenderer>();
         lr.SetVertexCount(2);
@@ -50,25 +50,28 @@ public class Tether : MonoBehaviour {
         swingMat = lr.materials[0];
         pullMat = lr.materials[1];
         activeTethers = new List<TetherReg>();
-        if (testingMultipleTethers)
+
+        activeTethers.Add(new TetherReg());
+        activeTethers.Add(new TetherReg());
+        foreach (TetherReg t in activeTethers)
         {
-            activeTethers.Add(new TetherReg());
-            activeTethers.Add(new TetherReg());
-            foreach (TetherReg t in activeTethers)
-            {
-                t.amTethered = false;
-                t.lrObject = Instantiate(lrObject);
-                t.lrObject.transform.SetParent(transform);
-                t.lrObject.transform.localPosition = Vector3.zero;
-                t.lr = t.lrObject.GetComponent<LineRenderer>();
-                t.lr.SetVertexCount(2);
-                t.lr.enabled = false;
-            }
+            t.amTethered = false;
+            t.lrObject = Instantiate(lrObject);
+            t.lrObject.transform.SetParent(transform);
+            t.lrObject.transform.localPosition = Vector3.zero;
+            t.lr = t.lrObject.GetComponent<LineRenderer>();
+            t.lr.SetVertexCount(2);
+            t.lr.enabled = false;
+
         }
     }
 
     void Update()
     {
+        if (Input.GetKeyDown("q"))
+        {
+            testingMultipleTethers = !testingMultipleTethers;
+        }
         if (testingMultipleTethers)
         {
             if (Input.GetButtonDown("Fire1"))
@@ -130,6 +133,21 @@ public class Tether : MonoBehaviour {
             {
                 amTethered = false;
                 amPulling = false;
+                foreach (TetherReg t in activeTethers)
+                {
+                    t.amTethered = false;
+                    t.lr.enabled = false;
+                }
+            }
+        }
+        if (Input.GetButtonDown("Fire3"))
+        {
+            amTethered = false;
+            amPulling = false;
+            foreach (TetherReg t in activeTethers)
+            {
+                t.amTethered = false;
+                t.lr.enabled = false;
             }
         }
     }
